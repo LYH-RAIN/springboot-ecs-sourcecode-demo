@@ -1,12 +1,8 @@
 #!/bin/bash
 # 检查传入的参数
-if [ "$#" -ne 2 ]; then
-    echo "Usage: \$0 <username> <password>"
-    exit 1
-fi
 
-USERNAME=\$1
-PASSWORD=\$2
+USERNAME=$1
+PASSWORD=$2
 
 sudo yum install -y java-1.8.0-openjdk
 echo y | sudo yum install java-1.8.0-openjdk-devel

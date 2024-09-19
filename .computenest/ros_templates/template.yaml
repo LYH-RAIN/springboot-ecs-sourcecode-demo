@@ -106,12 +106,11 @@ Parameters:
     AssociationPropertyMetadata:
       VpcId: VpcId
       ZoneId: ZoneId
-  username:
+  AdminPassword:
     Type: String
-    Label: 用户名
-  password:
-    Type: String
-    Label: 密码
+    AssociationProperty: ALIYUN::ECS::Instance::Password
+    Label: 管理员密码
+    NoEcho: True
 Resources:
   SecurityGroup:
     Type: ALIYUN::ECS::SecurityGroup
@@ -171,8 +170,8 @@ Resources:
             # 源代码通过computenest-cli被打包为tar.gz包，并发布为部署物
             wget '{{ computenest::file::LYH-RAIN_springboot-ecs-sourcecode-demo }}' -O LYH-RAIN_springboot-ecs-sourcecode-demo.tar.gz > /var/log/download.log
             tar -zxvf LYH-RAIN_springboot-ecs-sourcecode-demo.tar.gz && cd "$(tar -tzf LYH-RAIN_springboot-ecs-sourcecode-demo.tar.gz | head -1 | awk -F'/' '{print $1}')"
-            sudo chmod +x deploy.sh
-            sudo ./deploy.sh ${username} ${password}
+            echo "start run command"
+            echo "${AdminPassword}"
 
             ARGUS_VERSION=3.5.7 /bin/bash -c "$(curl -sS https://cms-agent-${RegionId}.oss-${RegionId}-internal.aliyuncs.com/Argus/agent_install_ecs-1.7.sh)" >> /root/install_cms_agent.log 2>&1
           - RegionId:
@@ -212,8 +211,7 @@ Metadata:
         Label:
           default: 可用区配置
       - Parameters:
-          - username
-          - password
+          - AdminPassword
         Label:
           en: Software Configuration
           zh-cn: 软件配置
